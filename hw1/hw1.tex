@@ -6,8 +6,11 @@
 \usepackage{titling}
 \usepackage{nicematrix}
 \usepackage[colorlinks=true]{hyperref}
+\usepackage{graphicx}
 
 \setlength{\droptitle}{-6em}
+
+\newcommand{\info}[2]{\frac{#1}{#2}\log\bigl( \frac{#1}{#2} \bigr)}
 
 \begin{document}
 
@@ -22,7 +25,88 @@ Homework I -- Group 016\\
 \item Complete the given decision tree using Information gain with Shannon entropy ($\log_2$).
 Consider that: i) a minimum of 4 observations is required to split an internal node, and
 ii) decisions by ascending alphabetic order should be placed in case of ties.
-    
+ 
+\begin{center}
+    \includegraphics[scale=0.3]{images/decision-tree.png}
+\end{center}
+
+\paragraph{For $y_1 > 0.4$}
+
+\begin{equation}
+    \begin{split}
+        H(y_\textrm{out}) & = -\sum_{v \in y_\textrm{out}}\textrm{p}(v)\log(\textrm{p}(v)) \\
+        & = -\info{3}{7} - \info{2}{7} - \info{2}{7} \\
+        & \approx 1.5567
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \textrm{IG}(y_\textrm{out}, y_2) &= H(y_\textrm{out}) - H(y_\textrm{out}|y_2) \\
+        & = H(y_\textrm{out}) - \sum_{v \in y_2}\textrm{p}(v)H(y_\textrm{out}|y_2=v) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{3}{7}H(y_\textrm{out}|y_2=0) + \frac{2}{7}H(y_\textrm{out}|y_2=1) + \frac{2}{7}H(y_\textrm{out}|y_2=2)\Biggr) \\
+        & = H(y_\textrm{out}) - \Biggl( -\frac{3}{7}\biggl( \info{1}{3} + \info{1}{3} + \info{1}{3} \biggr) \\
+        & - \frac{2}{7}\biggl( \info{1}{2} + \info{1}{2} \biggr) - \frac{2}{7} \cdot 0 \Biggr) \\
+        & \approx 0.5917
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \textrm{IG}(y_\textrm{out}, y_3) &= H(y_\textrm{out}) - H(y_\textrm{out}|y_3) \\
+        & = H(y_\textrm{out}) - \sum_{v \in y_3}\textrm{p}(v)H(y_\textrm{out}|y_3=v) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{1}{7}H(y_\textrm{out}|y_3=0) + \frac{2}{7}H(y_\textrm{out}|y_3=1) + \frac{4}{7}H(y_\textrm{out}|y_3=2)\Biggr) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{1}{7} \cdot 0 + \frac{2}{7} \cdot 1 + \frac{4}{7} \cdot 1  \Biggr) \\
+        & = H(y_\textrm{out}) - \frac{6}{7} \\
+        & \approx 0.6996
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \textrm{IG}(y_\textrm{out}, y_4) &= H(y_\textrm{out}) - H(y_\textrm{out}|y_4) \\
+        & = H(y_\textrm{out}) - \sum_{v \in y_4}\textrm{p}(v)H(y_\textrm{out}|y_4=v) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{2}{7}H(y_\textrm{out}|y_4=0) + \frac{3}{7}H(y_\textrm{out}|y_4=1) + \frac{2}{7}H(y_\textrm{out}|y_4=2)\Biggr) \\
+        & = H(y_\textrm{out}) - \Biggl( -\frac{2}{7} \cdot 1 - \frac{3}{7}\Bigl( \info{1}{3} + \info{2}{3} \Bigr) - \frac{2}{7} \cdot 1\Biggr)\\
+        & \approx 0.5917
+    \end{split}
+\end{equation}
+
+\paragraph{} For this node $y_3$ has the highest information gain, so we choose it to split the node.
+
+\paragraph{For $y_1 > 0.4 \wedge y_3=2$}
+
+\begin{equation}
+    \begin{split}
+        H(y_\textrm{out}) & = -\sum_{v \in y_\textrm{out}}\textrm{p}(v)\log(\textrm{p}(v)) \\
+        & = -\info{1}{2} - \info{1}{2} \\
+        & = 1
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \textrm{IG}(y_\textrm{out}, y_2) &= H(y_\textrm{out}) - H(y_\textrm{out}|y_2) \\
+        & = H(y_\textrm{out}) - \sum_{v \in y_2}\textrm{p}(v)H(y_\textrm{out}|y_2=v) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{1}{2}H(y_\textrm{out}|y_2=0) + \frac{1}{4}H(y_\textrm{out}|y_2=1) + \frac{1}{4}H(y_\textrm{out}|y_2=2)\Biggr) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{1}{2} \cdot 0 + \frac{1}{4} \cdot 0 + \frac{1}{4} \cdot 0  \Biggr) \\
+        & = H(y_\textrm{out}) - 0 \\
+        & = 1
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \textrm{IG}(y_\textrm{out}, y_4) &= H(y_\textrm{out}) - H(y_\textrm{out}|y_4) \\
+        & = H(y_\textrm{out}) - \sum_{v \in y_4}\textrm{p}(v)H(y_\textrm{out}|y_4=v) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{1}{2}H(y_\textrm{out}|y_3=0) + \frac{1}{4}H(y_\textrm{out}|y_3=1) + \frac{1}{4}H(y_\textrm{out}|y_3=2)\Biggr) \\
+        & = H(y_\textrm{out}) - \Biggl( \frac{1}{2} \Bigl( - \info{1}{2} - \info{1}{2} \Bigr) + \frac{1}{4} \cdot 0 + \frac{1}{4} \cdot 0  \Biggr) \\
+        & = H(y_\textrm{out}) - \frac{1}{2} \\
+        & = \frac{1}{2}
+    \end{split}
+\end{equation}
+
+\paragraph{} For this node $y_2$ has the highest information gain, so we choose it to split the node.
 
 \item Draw the training confusion matrix for the learnt decision tree.
 
@@ -30,7 +114,7 @@ ii) decisions by ascending alphabetic order should be placed in case of ties.
 
     \begin{table}[htbp]
     \centering
-    \begin{NiceTabular}{*{4}{c}*{7}{p{1cm}}}[hvlines]
+    \begin{NiceTabular}{*{4}{c}*{6}{p{1cm}}}[hvlines]
     \Block{2-2}{} & & \Block{1-3}{Real}\\
     & & A & B & C\\
     \Block{3-1}{Predicted}& A & 4 & 1 & 0\\
@@ -84,7 +168,7 @@ ii) decisions by ascending alphabetic order should be placed in case of ties.
         \textrm{Spearman}(y_1, y_2) = 0.0797
     \end{equation}
 
-    \paragraph{}This means that $y_1$ and $y_2$ are not correlated.
+    \paragraph{}This indicates that $y_1$ and $y_2$ have a very weak correlation, to the point that it is negligible.
 
     \item Draw the class-conditional relative histograms of $y_1$ using 5 equally spaced bins in [0,1].
     Challenge: find the root split using the discriminant rules from these empirical distributions.    
