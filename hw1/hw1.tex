@@ -129,7 +129,62 @@ ii) decisions by ascending alphabetic order should be placed in case of ties.
 
 \item Identify which class has the lowest training F1 score.
 
+\paragraph{Class A}
 
+\begin{equation}
+    P = \frac{\textrm{TP}}{\textrm{TP} + \textrm{FP}} = \frac{4}{4+1} = \frac{4}{5}
+\end{equation}
+
+\begin{equation}
+    R = \frac{\textrm{TP}}{\textrm{TP} + \textrm{FN}} = \frac{4}{4+0} = 1
+\end{equation}
+
+\begin{equation}
+    \frac{1}{F_A} = \frac{1}{2}(\frac{1}{P} + \frac{1}{R}) = \frac{1}{2}\cdot(\frac{5}{4}+1) = \frac{9}{8}
+\end{equation}
+
+\begin{equation}
+    F_A = \frac{8}{9}
+\end{equation}
+
+
+\paragraph{Class B}
+
+\begin{equation}
+    P = \frac{\textrm{TP}}{\textrm{TP} + \textrm{FP}} = \frac{2}{2+0} = 1
+\end{equation}
+
+\begin{equation}
+    R = \frac{\textrm{TP}}{\textrm{TP} + \textrm{FN}} = \frac{2}{2+2} = \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+    \frac{1}{F_B} = \frac{1}{2}(\frac{1}{P} + \frac{1}{R}) = \frac{1}{2}\cdot(1+2) = \frac{3}{2}
+\end{equation}
+
+\begin{equation}
+    F_B = \frac{2}{3}
+\end{equation}
+
+\paragraph{Class C}
+
+\begin{equation}
+    P = \frac{\textrm{TP}}{\textrm{TP} + \textrm{FP}} = \frac{4}{4+1} = \frac{4}{5}
+\end{equation}
+
+\begin{equation}
+    R = \frac{\textrm{TP}}{\textrm{TP} + \textrm{FN}} = \frac{4}{4+0} = 1
+\end{equation}
+
+\begin{equation}
+    \frac{1}{F_A} = \frac{1}{2}(\frac{1}{P} + \frac{1}{R}) = \frac{1}{2}\cdot(\frac{5}{4}+1) = \frac{9}{8}
+\end{equation}
+
+\begin{equation}
+    F_A = \frac{8}{9}
+\end{equation}
+
+\paragraph{} The class B has the lowest training $F_1$ score.
 
 \item Considering $y_2$ to be ordinal, assess if $y_1$ and $y_2$ are correlated using the Spearman coefficient.
 \begin{center}
