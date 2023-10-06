@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{nicematrix}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\setlength{\droptitle}{-6em}
+\begin{document}
+
+\newcommand{\ind}{\perp\!\!\!\!\!\perp} 
+\newcommand{\notind}{\not\perp\!\!\!\!\!\perp} 
+
+\center
+Aprendizagem 2023\\
+Homework II -- Group 016\\
+(ist1100293, ist1102556)\vskip 1cm
+
+\large{\textbf{Part I}: Pen and paper}\normalsize
+
+\begin{enumerate}[leftmargin=\labelsep]
+
+\item Consider $\mathbf{x}_1$-$\mathbf{x}_7$ to be training observations, $\mathbf{x}_8$-$\mathbf{x}_9$ to be testing observations, $y_1$-$y_5$ to be input
+variables and $y_6$ to be the target variable.
+Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution calculus
+
+    \begin{enumerate}
+        \item Learn a Bayesian classifier assuming: i) ${y_1, y_2}$, ${y_3, y_4}$ and ${y_5}$ sets of independent
+        variables (e.g., $y_1 \ind y_3$ yet $y_1 \notind y_2$), and ii) $y_1 \times y_2 \in \mathbb{R}^2$
+        is normally distributed. Show all
+        parameters (distributions and priors for subsequent testing).
+
+        \item Under a MAP assumption, classify each testing observation showing all your calculus.
+    
+        \item  Consider that the default decision threshold of $\theta = 0.5$ can be adjusted according to
+    
+            \[ 
+            f(\mathbf{x}|\theta)= \left\{
+            \begin{array}{ll}
+                  \textrm{A} & \textrm{P}(\textrm{A}|\mathbf{x}) > \theta \\
+                  \textrm{B} & \textrm{otherwise}
+            \end{array} 
+            \right. 
+            \]
+
+            Under a maximum likelihood assumption, what thresholds optimize testing accuracy?
+    \end{enumerate}
+
+    \item Let $y_1$ be the target numeric variable, $y_2$-$y_6$ be the input variables where $y_2$ is binarized under an
+    equal-width (equal-range) discretization. For the evaluation of regressors, consider a 3-fold
+    cross-validation over the full dataset ($\mathbf{x}_1$-$\mathbf{x}_9$) without shuffling the observations.
+
+    \begin{enumerate}
+        \item Identify the observations and features per data fold after the binarization procedure.
+        \item  Consider a distance-weighted $k$NN with $k = 3$, Hamming distance ($d$), and $1/d$ weighting.
+        Compute the MAE of this $k$NN regressor for the 1
+        st iteration of the cross-validation (i.e. train
+        observations have the lower indices).
+    \end{enumerate}
+\end{enumerate}
+
+\vskip 1cm
+
+\large{\textbf{Part II}: Programming and Critical Analysis}\normalsize
+
+\paragraph{}Considering the column\_diagnosis.arff dataset available at the course webpage’s homework tab.
+Using sklearn, apply a 10-fold stratified cross-validation with shuffling (random\_state=0) for the
+assessment of predictive models along this section.
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item Compare the performance of $k$NN with $k = 5$ and naïve Bayes with Gaussian assumption
+    (consider all remaining parameters for each classifier as sklearn's default):
+
+    \begin{enumerate}
+        \item Plot two boxplots with the fold accuracies for each classifier.
+        \item Using scipy, test the hypothesis “$k$NN is statistically superior to naïve Bayes regarding
+        accuracy”, asserting whether is true.
+    \end{enumerate}
+
+    \item Consider two $k$NN predictors with $k = 1$ and $k = 5$ (uniform weights, Euclidean distance,
+    all remaining parameters as default). Plot the differences between the two cumulative confusion
+    matrices of the predictors. Comment.
+
+    \item Considering the unique properties of column\_diagnosis, identify three possible difficulties
+    of naïve Bayes when learning from the given dataset.
+\end{enumerate}
+
+
+\end{document}
