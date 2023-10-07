@@ -11,6 +11,9 @@
 \usepackage{mathtools}
 
 \setlength{\droptitle}{-6em}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
 \begin{document}
 
 \newcommand{\prob}{\textrm{P}}
@@ -183,6 +186,56 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
 
         \item Under a MAP assumption, classify each testing observation showing all your calculus.
     
+        \begin{equation}
+            \textrm{MAP}(\textbf{x}) = \argmax_C \frac{\prob(\textbf{x}|y_6 = C)\prob(y_6 = C)}{\prob(\textbf{x})}
+        \end{equation}
+
+        Since $\prob(\textbf{x})$ is independent of $C$, we have:
+
+        \begin{equation}
+            \textrm{MAP}(\textbf{x}) = \argmax_C \prob(\textbf{x}|y_6 = C)\prob(y_6 = C)
+        \end{equation}
+
+        \paragraph{Para x8:}
+
+        \begin{equation}
+        \begin{split}
+            \prob(y_1 = 0.38, y_2 = 0.52, y_3 = 0, y_4 = 1, y_5 = 0|y_6 = A)\prob(y_6 = A)\\
+            = \prob(y_1 = 0.38, y_2 = 0.52|y_6 = A)\prob(y_3 = 0, y_4 = 1|y_6 = A)\prob(y_5 = 0|y_6 = A)\prob(y_6 = A)\\
+            \approx 0.9847 \times \frac{1}{3} \times \frac{1}{3} \times \frac{3}{7} \approx 0.04689
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}
+            \prob(y_1 = 0.38, y_2 = 0.52, y_3 = 0, y_4 = 1, y_5 = 0|y_6 = B)\prob(y_6 = B)\\
+            = \prob(y_1 = 0.38, y_2 = 0.52|y_6 = B)\prob(y_3 = 0, y_4 = 1|y_6 = B)\prob(y_5 = 0|y_6 = B)\prob(y_6 = B)\\
+            \approx 1.9624 \times \frac{1}{4} \times \frac{1}{4} \times \frac{4}{7} \approx 0.07009
+        \end{split}
+        \end{equation}
+
+        According to a MAP assumption, we classify $\mathbf{x}_8$ as $\hat{y}_6 = B$.
+
+        \paragraph{Para x9:}
+
+        \begin{equation}
+        \begin{split}
+            \prob(y_1 = 0.42, y_2 = 0.59, y_3 = 0, y_4 = 1, y_5 = 1|y_6 = A)\prob(y_6 = A)\\
+            = \prob(y_1 = 0.42, y_2 = 0.59|y_6 = A)\prob(y_3 = 0, y_4 = 1|y_6 = A)\prob(y_5 = 1|y_6 = A)\prob(y_6 = A)\\
+            \approx 0.4031 \times \frac{1}{3} \times \frac{1}{3} \times \frac{3}{7} \approx 0.0192
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}
+            \prob(y_1 = 0.42, y_2 = 0.59, y_3 = 0, y_4 = 1, y_5 = 1|y_6 = B)\prob(y_6 = B)\\
+            = \prob(y_1 = 0.42, y_2 = 0.59|y_6 = B)\prob(y_3 = 0, y_4 = 1|y_6 = B)\prob(y_5 = 1|y_6 = B)\prob(y_6 = B)\\
+            \approx 1.7286 \times \frac{1}{4} \times \frac{1}{2} \times \frac{4}{7} \approx 0.1235
+        \end{split}
+        \end{equation}
+
+        According to a MAP assumption, we classify $\mathbf{x}_9$ as $\hat{y}_6 = B$.
+
         \item  Consider that the default decision threshold of $\theta = 0.5$ can be adjusted according to
     
             \[ 
