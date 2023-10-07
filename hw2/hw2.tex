@@ -141,6 +141,37 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
         \end{split}
         \end{equation}
 
+        \paragraph{Whole Probabilities}
+
+        (Even though you don't need the values of the whole probabilities (evidences) to classify according to MAP o ML, we will still compute those in case we need later.)
+
+        \begin{equation}
+            \prob(y_1 = x_1, y_2 = x_2) = \textrm{N}(\mathbf{x} | \mu, \Sigma)
+        \end{equation}
+
+        Where:
+    
+        \begin{equation}
+            \mu = \begin{bmatrix}
+                0.4414 \\
+                0.4100
+            \end{bmatrix} \qquad \Sigma = \begin{bmatrix}
+                0.0491 & -0.0211 \\
+                -0.211 & 0.0375
+            \end{bmatrix}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}
+            \prob(y_3 = 0, y_4 = 0) = \frac{2}{7} &\qquad \prob(y_3 = 0, y_4 = 1) = \frac{2}{7} \\
+            \prob(y_3 = 1, y_4 = 0) = \frac{2}{7} &\qquad \prob(y_3 = 1, y_4 = 1) = \frac{1}{7}
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+            \prob(y_5 = 0) = \frac{2}{7} \qquad \prob(y_5 = 1) = \frac{3}{7} \qquad \prob(y_5 = 2) = \frac{2}{7}
+        \end{equation}
+
         \item Under a MAP assumption, classify each testing observation showing all your calculus.
     
         \item  Consider that the default decision threshold of $\theta = 0.5$ can be adjusted according to
