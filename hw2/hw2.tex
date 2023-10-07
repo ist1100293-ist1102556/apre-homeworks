@@ -97,6 +97,15 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
         So we have:
 
         \begin{equation}
+        \begin{split}
+            \textrm{var}(y_1)_A &= \frac{(0.24-0.24)^2 + (0.16-0.24)^2 + (0.32-0.24)^2}{2} = 0.0064 \\
+            \textrm{var}(y_2)_A &= \frac{(0.36-0.52)^2 + (0.48-0.52)^2 + (0.72-0.52)^2}{2} = 0.0336 \\
+            \textrm{cov}(y_1, y_2)_A &= \frac{(0.24-0.24)(0.36-0.52) + (0.16-0.24)(0.48-0.52)}{2}+ \\
+            &+ \frac{(0.32-0.24)(0.72-0.52)}{2} = 0.0096
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
             \Sigma_A =
             \begin{bmatrix}
                 \textrm{var}(y_1)_A & \textrm{cov}(y_1, y_2)_A \\
