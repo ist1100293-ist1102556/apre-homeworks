@@ -360,6 +360,81 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
         \item  Consider a distance-weighted $k$NN with $k = 3$, Hamming distance ($d$), and $1/d$ weighting.
         Compute the MAE of this $k$NN regressor for the 1st iteration of the cross-validation (i.e. train
         observations have the lower indices).
+        
+        \begin{center}
+            \begin{tabular}{|c|c|c|c|c|c|c|}
+                \hline
+                d & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ \\
+                \hline
+                $x_7$ & 4 & 4 & \textbf{2} & \textbf{2} & \textbf{3} & 4 \\
+                \hline
+                $x_8$ & \textbf{2} & 4 & \textbf{1} & 4 & \textbf{3} & 5 \\
+                \hline
+                $x_9$ & 4 & 4 & \textbf{2} & \textbf{2} & \textbf{3} & 4 \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+        \paragraph{For x7:}
+
+        \begin{equation}
+        \begin{split}
+            k\textrm{NN}_{k = 3}(\mathbf{x}_7) = \Bigl\{ \mathbf{x}_3, \mathbf{x}_4, \mathbf{x}_5\Bigr\} \\
+            w_3 = \frac{1}{2} \qquad w_4 = \frac{1}{2} \qquad w_5 = \frac{1}{3}
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}
+            \hat{y}_{6}(\mathbf{x}_7) &= \textrm{AverageMean}\Bigl\{ y_{6}(\mathbf{x}_3), y_{6}(\mathbf{x}_4), y_{6}(\mathbf{x}_5) \Bigr\} \\
+            &= \frac{w_3y_{6}(\mathbf{x}_3) + w_4y_{6}(\mathbf{x}_4) + w_5y_{6}(\mathbf{x}_5)}{w_3 + w_4 + w_5} \\
+            &= \frac{\frac{1}{2} \times 0.32 + \frac{1}{2} \times 0.54 + \frac{1}{3} \times 0.66}{\frac{1}{2} + \frac{1}{2} + \frac{1}{3}} \\
+            &= 0.4875
+        \end{split}
+        \end{equation}
+
+        \paragraph{For x8:}
+
+        \begin{equation}
+        \begin{split}
+            k\textrm{NN}_{k = 3}(\mathbf{x}_8) = \Bigl\{ \mathbf{x}_1, \mathbf{x}_3, \mathbf{x}_5\Bigr\} \\
+            w_1 = \frac{1}{2} \qquad w_3 = 1 \qquad w_5 = \frac{1}{3}
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}
+            \hat{y}_{6}(\mathbf{x}_8) &= \frac{w_1y_{6}(\mathbf{x}_1) + w_3y_{6}(\mathbf{x}_3) + w_5y_{6}(\mathbf{x}_5)}{w_1 + w_3 + w_5} \\
+            &= \frac{\frac{1}{2} \times 0.24 + 1 \times 0.32 + \frac{1}{3} \times 0.66}{\frac{1}{2} + 1 + \frac{1}{3}} \\
+            &= 0.36
+        \end{split}
+        \end{equation}
+
+        \paragraph{For x9:}
+
+        \begin{equation}
+        \begin{split}
+            k\textrm{NN}_{k = 3}(\mathbf{x}_9) = \Bigl\{ \mathbf{x}_3, \mathbf{x}_4, \mathbf{x}_5\Bigr\} \\
+            w_3 = \frac{1}{2} \qquad w_4 = \frac{1}{2} \qquad w_5 = \frac{1}{3}
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}
+            \hat{y}_{6}(\mathbf{x}_9) &= \frac{w_3y_{6}(\mathbf{x}_3) + w_4y_{6}(\mathbf{x}_4) + w_5y_{6}(\mathbf{x}_5)}{w_3 + w_4 + w_5} \\
+            &= \frac{\frac{1}{2} \times 0.32 + \frac{1}{2} \times 0.54 + \frac{1}{3} \times 0.66}{\frac{1}{2} + \frac{1}{2} + \frac{1}{3}} \\
+            &= 0.4875
+        \end{split}
+        \end{equation}
+
+        \begin{equation}
+        \begin{split}            
+            \textrm{MAE} &= \frac{1}{N}\sum_{i = 1}^N |z_i - \hat{z}_i| \\
+            &=\frac{|0.41 - 0.4875| + |0.38 - 0.36| + |0.42-0.4875|}{3} \\
+            &=0.0549
+        \end{split}
+        \end{equation}
+        
     \end{enumerate}
 \end{enumerate}
 
