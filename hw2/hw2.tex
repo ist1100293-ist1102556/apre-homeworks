@@ -322,9 +322,43 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
 
     \begin{enumerate}
         \item Identify the observations and features per data fold after the binarization procedure.
+        
+        Since it's assumed that $y_1 \in [0, 1]$ our binarization criteria will be:
+
+        \[ 
+            y_2^{\textrm{new}} = \left\{
+            \begin{array}{ll}
+                  0, & \textrm{if } y_2 \leq 0.5 \\
+                  1, & \textrm{if } y_2 > 0.5
+            \end{array} 
+            \right. 
+        \]
+
+        After applying the binarization, our data is:
+
+        \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        D     & $y_1$ & $y_2$ & $y_3$ & $y_4$ & $y_5$ & $y_6$ \\
+        \hline
+        $x_1$ & 0.24  & 0     & 1     & 1     & 0     & A \\
+        $x_2$ & 0.16  & 0     & 1     & 0     & 1     & A \\
+        $x_3$ & 0.32  & 1     & 0     & 1     & 2     & A \\
+        $x_4$ & 0.54  & 0     & 0     & 0     & 1     & B \\
+        $x_5$ & 0.66  & 0     & 0     & 0     & 0     & B \\
+        $x_6$ & 0.76  & 0     & 1     & 0     & 2     & B \\
+        $x_7$ & 0.41  & 1     & 0     & 1     & 1     & B \\
+        $x_8$ & 0.38  & 1     & 0     & 1     & 0     & A \\
+        $x_9$ & 0.42  & 1     & 0     & 1     & 1     & B \\
+        \hline
+        \end{tabular}
+        \end{center}
+
+        \paragraph{1st fold:} Training: $\{x_1, x_2, x_3, x_4, x_5, x_6\}$ Testing: $\{x_7, x_8, x_9\}$
+        \paragraph{2nd fold:} Training: $\{x_1, x_2, x_3, x_7, x_8, x_9\}$ Testing: $\{x_4, x_5, x_6\}$
+        \paragraph{3rd fold:} Training: $\{x_4, x_5, x_6, x_7, x_8, x_9\}$ Testing: $\{x_1, x_2, x_3\}$
         \item  Consider a distance-weighted $k$NN with $k = 3$, Hamming distance ($d$), and $1/d$ weighting.
-        Compute the MAE of this $k$NN regressor for the 1
-        st iteration of the cross-validation (i.e. train
+        Compute the MAE of this $k$NN regressor for the 1st iteration of the cross-validation (i.e. train
         observations have the lower indices).
     \end{enumerate}
 \end{enumerate}
