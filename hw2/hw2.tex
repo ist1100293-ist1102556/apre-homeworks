@@ -34,6 +34,12 @@ Homework II -- Group 016\\
 variables and $y_6$ to be the target variable.
 Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution calculus
 
+    We used the following code to get the values of the multivariate normal PDF's:
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code1.png}
+    \end{center}
+
     \begin{enumerate}
         \item Learn a Bayesian classifier assuming: i) ${y_1, y_2}$, ${y_3, y_4}$ and ${y_5}$ sets of independent
         variables (e.g., $y_1 \ind y_3$ yet $y_1 \notind y_2$), and ii) $y_1 \times y_2 \in \mathbb{R}^2$
@@ -442,26 +448,85 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
 
 \large{\textbf{Part II}: Programming and Critical Analysis}\normalsize
 
-\paragraph{}Considering the column\_diagnosis.arff dataset available at the course webpage’s homework tab.
+\paragraph{}Considering the column\_diagnosis.arff dataset available at the course webpage's homework tab.
 Using sklearn, apply a 10-fold stratified cross-validation with shuffling (random\_state=0) for the
 assessment of predictive models along this section.
+
+\begin{center}
+    \includegraphics[scale=0.8]{images/code2.png}
+\end{center}
 
 \begin{enumerate}[leftmargin=\labelsep]
     \item Compare the performance of $k$NN with $k = 5$ and naïve Bayes with Gaussian assumption
     (consider all remaining parameters for each classifier as sklearn's default):
 
+    \begin{center}
+        \includegraphics[scale=0.8]{images/code3.png}
+    \end{center}
+
     \begin{enumerate}
         \item Plot two boxplots with the fold accuracies for each classifier.
+        
+        \begin{center}
+            \includegraphics[scale=0.5]{images/code4.png}
+        \end{center}
+
+        \begin{center}
+            \includegraphics[scale=0.6]{images/code5.png}
+        \end{center}
+
+        \vskip 1cm
+
+        Result:
+
+        \begin{center}
+            \includegraphics[scale=0.6]{images/graph1.png}
+        \end{center}
+
         \item Using scipy, test the hypothesis “$k$NN is statistically superior to naïve Bayes regarding
         accuracy”, asserting whether is true.
+
+        \begin{center}
+            \includegraphics[scale=0.6]{images/code6.png}
+        \end{center}
+
+        Visto que o p-value é aproximadamente 0.17, não podemos rejeitar a hipótese nula para os valores de significância usuais (geralmente igual ou inferior a 0.05), a favor da hipótese "kNN is statistically superior to naïve Bayes regarding accuracy".
     \end{enumerate}
 
     \item Consider two $k$NN predictors with $k = 1$ and $k = 5$ (uniform weights, Euclidean distance,
     all remaining parameters as default). Plot the differences between the two cumulative confusion
     matrices of the predictors. Comment.
 
+    \begin{center}
+        \includegraphics[scale=0.3]{images/code7.png}
+    \end{center}
+
+    Result:
+
+    \begin{center}
+        \includegraphics[scale=0.6]{images/table1.png}
+    \end{center}
+
+    Ao fazemos a substração das matrizes de confusão cumulativas para o classificador kNN de k=1 com o classificador kNN de k=5, conseguimos concluir que valores negativos na substração indicam um maior número nessa célula a favor do classificador kNN de k=5, e se for positivo, a favor de kNN de k=1.
+
+    Ao observarmos as colunas, conseguimos concluir que o classificador de k=1 tem a tendência de classificar mais casos como "Normal" e que o classificador k=5 tem a tendência de classificar mais casos como "Hernia". Esta tendências podem ser observadas pela errada classifcação de mais 5 casos com "Hernia" enquanto na realidade era "Normal" pelo classificador k=5, enquanto que o classificador k=1 classificou erradamente como "Normal" duas observações "Hernia" e 1 observação "Spondylolisthesis". Curiosamente, ambos os modelos classificaram o mesmo número de casos reais de "Spondylolisthesis" como "Hernia".
+
+    No caso da classe "Spondylolisthesis" os classificadores possuem uma tendência semelhante ao classificar observações para esta classe enquanto se trata de uma "Hernia". Por outro lado, o classificador k=1 preveu mais 3 observações com esta classe que eram "Normal" do que o classificador k=5, enquanto que o classificador k=5 classificou corretamente uma observação a mais do que k=1 para esta classe.
+
+    Para classificações corretas (True Positives), o classificador k=5 classifica mais observações corretamente que se tratam de "Hernia" e "Spondylolisthesis", enquanto que k=1 classifica corretamente mais observações do tipo "Normal".
+
     \item Considering the unique properties of column\_diagnosis, identify three possible difficulties
     of naïve Bayes when learning from the given dataset.
+
+    Ao utilizarmos naïve Bayes, estamos a assumir independência entre as variáveis de input, o que poderá causar perda de informação se existir dependências entre elas. Neste caso, para um diagnóstico de coluna, geralmente é necessário considerar vários pontos (variáveis de input) relacionados, para se poder classificar corretamente, ou seja, neste caso perde-se informção ao usar este modelo. Este facto, junto com a assumção gaussiana, faz com que haja perda de informação, visto que o mais correto seria considerar as variáveis de imput como uma gaussiana multivariada.
+
+    Para além disso, para utilizar este modelo, apenas usámos uma amostra de 310 observações, ou seja um número limitado de observações da população inteira, o que pode gerar resultados não descritivos da população que estamos a estudar, ainda por cima considerando a dimensionalidade do conjunto de dados.
+
+    Para estes dados, também falta balançeamento de classes, visto que existe 150 observações de "Spondylolisthesis", 100 observações de "Normal" e 60 observações de "Hernia" (obtidos através da função df.value\_counts("class")). Ou seja, visto que o sklearn.naive\_bayes utiliza um critério MAP, é criado bias através dos priors.
+
+    \begin{center}
+        \includegraphics[scale=0.6]{images/code8.png}
+    \end{center}
 \end{enumerate}
 
 
