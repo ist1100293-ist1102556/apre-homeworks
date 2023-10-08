@@ -196,7 +196,7 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
             \textrm{MAP}(\textbf{x}) = \argmax_C \prob(\textbf{x}|y_6 = C)\prob(y_6 = C)
         \end{equation}
 
-        \paragraph{Para x8:}
+        \paragraph{For x8:}
 
         \begin{equation}
         \begin{split}
@@ -216,7 +216,7 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
 
         According to a MAP assumption, we classify $\mathbf{x}_8$ as $\hat{y}_6 = B$.
 
-        \paragraph{Para x9:}
+        \paragraph{For x9:}
 
         \begin{equation}
         \begin{split}
@@ -248,6 +248,72 @@ Hint: you can use scipy.stats.multivariate\_normal for multivariate distribution
             \]
 
             Under a maximum likelihood assumption, what thresholds optimize testing accuracy?
+
+            \begin{equation}
+                \textrm{ML}(\mathbf{x}) = \argmax_C \prob(\mathbf{x}|y_6 = C)
+            \end{equation}
+
+            \paragraph{ML prediction for x8}
+
+            \begin{equation}
+            \begin{split}
+                \prob(y_1 = 0.38, y_2 = 0.52, y_3 = 0, y_4 = 1, y_5 = 0|y_6 = A) \\
+                = \prob(y_1 = 0.38, y_2 = 0.52|y_6 = A)\prob(y_3 = 0, y_4 = 1|y_6 = A)\prob(y_5 = 0|y_6 = A) \\
+                \approx 0.9847 \times \frac{1}{3} \times \frac{1}{3} \approx 0.1094
+            \end{split}
+            \end{equation}
+
+            \begin{equation}
+            \begin{split}
+                \prob(y_1 = 0.38, y_2 = 0.52, y_3 = 0, y_4 = 1, y_5 = 0|y_6 = B) \\
+                = \prob(y_1 = 0.38, y_2 = 0.52|y_6 = B)\prob(y_3 = 0, y_4 = 1|y_6 = B)\prob(y_5 = 0|y_6 = B) \\
+                \approx 1.9624 \times \frac{1}{4} \times \frac{1}{4} \approx 0.1227
+            \end{split}
+            \end{equation}
+
+            \paragraph{ML prediction for x9}
+
+            \begin{equation}
+            \begin{split}
+                \prob(y_1 = 0.42, y_2 = 0.59, y_3 = 0, y_4 = 1, y_5 = 1|y_6 = A) \\
+                = \prob(y_1 = 0.42, y_2 = 0.59|y_6 = A)\prob(y_3 = 0, y_4 = 1|y_6 = A)\prob(y_5 = 1|y_6 = A) \\
+                \approx 0.4031 \times \frac{1}{3} \times \frac{1}{3} \approx 0.0448
+            \end{split}
+            \end{equation}
+
+            \begin{equation}
+            \begin{split}
+                \prob(y_1 = 0.42, y_2 = 0.59, y_3 = 0, y_4 = 1, y_5 = 1|y_6 = B) \\
+                = \prob(y_1 = 0.42, y_2 = 0.59|y_6 = B)\prob(y_3 = 0, y_4 = 1|y_6 = B)\prob(y_5 = 1|y_6 = B) \\
+                \approx 1.7286 \times \frac{1}{3} \times \frac{1}{2} \approx 0.2161
+            \end{split}
+            \end{equation}
+
+            Under a maximum likelihood assumption, both $\mathbf{x}_8$ and $\mathbf{x}_9$ get classified as $\hat{y}_6 = B$.
+
+            Since we are using the values of PDF's when computing the values of the likelihoods and consequently the posteriors, we need to normalize these values. Since the first are not truly probabilities (by the mathematical definition), we will denote them by $\prob^*(\mathbf{x})$ while true (normalized) probabilities will be denoted by $\prob(\mathbf{x})$.
+
+            \begin{equation}
+            \begin{split}
+                \prob^*(y_6 = A | \mathbf{x}_8) &= \frac{\prob^*(\mathbf{x}_8 | y_6 = A)\prob(y_6 = A)}{\prob^*(\mathbf{x}_8)} \approx \frac{0.04689}{3.6225 \times \frac{2}{7} \times \frac{2}{7}} \approx 0.1586 \\
+                \prob^*(y_6 = B | \mathbf{x}_8) &\approx \frac{0.07009}{3.6225 \times \frac{2}{7} \times \frac{2}{7}} \approx 0.2370 \\
+                \prob^*(y_6 = A | \mathbf{x}_9) &\approx \frac{0.01910}{2.5388 \times \frac{2}{7} \times \frac{3}{7}} \approx 0.06144 \\
+                \prob^*(y_6 = B | \mathbf{x}_9) &\approx \frac{0.1235}{2.5388 \times \frac{2}{7} \times \frac{3}{7}} \approx 0.3973
+            \end{split}
+            \end{equation}
+
+            \paragraph{Normalizing:}
+
+            \begin{equation}
+            \begin{split}
+                \prob(y_6 = A | \mathbf{x}_8) &= \frac{\prob^*(y_6 = A | \mathbf{x}_8)}{\prob^*(y_6 = A | \mathbf{x}_8) + \prob^*(y_6 = B | \mathbf{x}_8)} \approx \frac{0.1586}{0.1586 + 0.2370} \approx 0.4009 \\
+                \prob(y_6 = A | \mathbf{x}_9) &\approx \frac{0.06144}{0.06144 + 0.3973} \approx 0.1339
+            \end{split}
+            \end{equation}
+
+            Since the ML assumption classifies $\mathbf{x}_8$ and $\mathbf{x}_9$ as $\hat{y}_6 = B$, we need to find a threshold that makes the new classifier agree with the ML assumption (to maximize the accuracy) for the testing dataset.
+            We can choose $\theta \geq 0.4009$ since with those values, both of the posterior probabilities for the class A will be lower than that, and the classifier will output $\hat{y}_6 = B$.
+
     \end{enumerate}
 
     \item Let $y_1$ be the target numeric variable, $y_2$-$y_6$ be the input variables where $y_2$ is binarized under an
