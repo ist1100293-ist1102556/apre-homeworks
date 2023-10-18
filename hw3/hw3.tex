@@ -29,7 +29,136 @@ Homework III -- Group 016\\
 \large{\textbf{Part I}: Pen and paper}\normalsize
 
 \begin{enumerate}[leftmargin=\labelsep]
-    \item
+    \item Consider the problem of learning a regression model from 4 bivariate observations {(0.7, -0.3) , (0.4, 0.5) , (-0.2, 0.8) , (-0.4, 0.3)} with targets $(0.8, 0.6, 0.3, 0.3)$.
+
+    \begin{enumerate}
+        \item Given the radial basis function, $\phi_j(x)=\exp\bigl( \frac{||\mathbf{x}-\mathbf{c}_j||^2}{2} \bigr)$, that transforms the originalspace onto a new space characterized by the similarity of the original observations to thefollowing data points, {$c1$ = (0, 0) , $c2$ = (1, -1) , $c3$ = (-1, 1)}.Learn the Ridge regression ($l2$ regularization) using the closed solution with $\lambda = 0.1$.
+    
+        Lets define the transformation of a vector as:
+
+        \begin{equation}
+            \phi(\mathbf{x}) = \begin{bmatrix}
+                \phi_1(\mathbf{x}) \\
+                \phi_2(\mathbf{x}) \\
+                \phi_3(\mathbf{x})
+            \end{bmatrix}
+        \end{equation}
+
+        Putting the new vectors into the designated matrix will give us:
+
+        \begin{equation}
+        \begin{split}
+            X &= \begin{bmatrix}
+                1 & \phi_1(\mathbf{x}_1) & \phi_2(\mathbf{x}_1) & \phi_3(\mathbf{x}_1) \\
+                1 & \phi_1(\mathbf{x}_2) & \phi_2(\mathbf{x}_2) & \phi_3(\mathbf{x}_2) \\
+                1 & \phi_1(\mathbf{x}_3) & \phi_2(\mathbf{x}_3) & \phi_3(\mathbf{x}_3) \\
+                1 & \phi_1(\mathbf{x}_4) & \phi_2(\mathbf{x}_4) & \phi_3(\mathbf{x}_4)
+            \end{bmatrix} \\
+            &\approx \begin{bmatrix}
+                1 & 0.7483 & 0.7483 & 0.1013 \\
+                1 & 0.8146 & 0.2712 & 0.3312 \\
+                1 & 0.7118 & 0.0963 & 0.7118 \\
+                1 & 0.8825 & 0.1612 & 0.6538
+            \end{bmatrix}
+        \end{split}
+        \end{equation}
+
+        Since we are only transforming the input variables, our outcome values will be the same:
+
+        \begin{equation}
+            \mathbf{z} = \begin{bmatrix}
+                0.8 \\
+                0.6 \\
+                0.3 \\
+                0.3
+            \end{bmatrix}
+        \end{equation}
+
+        To apply a linear regression with Ridge regularization, we want to minimize the cost function:
+
+        \begin{equation}
+            E(\mathbf{w}) = \frac{1}{2}\sum_{i=1}^{n}(z_i - \mathbf{w}^T \cdot \mathbf{x}_i)^2 + \frac{\lambda}{2} ||\mathbf{w}||^2
+        \end{equation}
+
+        The solution of this problem is the vector of weights, which is given by:
+
+        \begin{equation}
+            \mathbf{w} = \Bigl(  X^T \cdot X + \lambda I\Bigr)^{-1} \cdot X^T \cdot \mathbf{z}
+        \end{equation}
+
+        For $\lambda = 0.1$, with our data we get:
+
+        \begin{equation}
+            \mathbf{w} = \begin{bmatrix}
+                0.339 & 0.199 & 0.401 & -0.296
+            \end{bmatrix}
+        \end{equation}
+
+        So, our solution will be:
+
+        \begin{equation}
+        \begin{split}
+            \hat{z} = f(\mathbf{x}) &= \mathbf{w} \cdot
+            \begin{bmatrix}
+                1 \\
+                \phi_1(\mathbf{x}) \\
+                \phi_2(\mathbf{x}) \\
+                \phi_3(\mathbf{x})
+            \end{bmatrix} \\
+            &= \begin{bmatrix}
+                0.339 & 0.199 & 0.401 & -0.296
+            \end{bmatrix} \cdot \begin{bmatrix}
+                1 \\
+                \phi_1(\mathbf{x}) \\
+                \phi_2(\mathbf{x}) \\
+                \phi_3(\mathbf{x})
+            \end{bmatrix} \\
+            &= 0.339 + 0.199\phi_1(\mathbf{x}) + 0.401\phi_2(\mathbf{x}) - 0.296\phi_3(\mathbf{x})
+        \end{split}
+        \end{equation}
+
+        \item Compute the training RMSE for the learnt regression.
+        
+        \begin{equation}
+        \begin{split}
+            \textrm{RMSE} &= \sqrt{\frac{1}{N}\sum_{i=1}^{N}(z_i-\hat{z}_i)^2} \\
+            &= \sqrt{\frac{1}{4}\biggl( (0.8-0.7705)^2 + (0.6-0.5123)^2 + (0.3-0.3390)^2 + (0.3-0.3863)^2\biggr)} \\
+            &\approx 0.06342
+        \end{split}
+        \end{equation}
+    \end{enumerate}
+
+    \item Consider a MLP classifier of three outcomes - $A$, $B$ and $C$ - characterized by the weights,
+    \begin{equation}
+        W^{[1]}=\begin{pmatrix}
+            1 & 1 & 1 & 1 \\
+            1 & 1 & 2 & 1 \\
+            1 & 1 & 1 & 1
+        \end{pmatrix}, b^{[1]} = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}, W^{[2]} = \begin{pmatrix}
+            1 & 4 & 1 \\
+            1 & 1 & 1
+        \end{pmatrix}, b^{[2]} = \begin{pmatrix}
+            1 \\
+            1
+        \end{pmatrix}, W^{[3]} = \begin{pmatrix}
+            1 & 1 \\
+            3 & 1 \\
+            1 & 1
+        \end{pmatrix}, b^{[3]} = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}
+    \end{equation}
+
+    the activation $f(x) = \frac{e^{0.5x-2}-e^{0.5x-2}}{e^{0.5x-2}+e^{0.5x-2}} = \tanh(0.5x-2)$ for every unit, and squared error loss $\frac{1}{2}||\mathbf{z}-\hat{\mathbf{z}}||^2_2$. Perform one batch gradient descent update (with learning rate $\eta = 0.1$) for trainingobservations $\mathbf{x}_1 = (1, 1, 1, 1)$ and $\mathbf{x}_2 = (1, 0, 0, -1)$ with targets $B$ and $A$, respectively.
+
+    
+
 \end{enumerate}
 
 \vskip 1cm
