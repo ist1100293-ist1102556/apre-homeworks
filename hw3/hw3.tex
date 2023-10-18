@@ -155,9 +155,160 @@ Homework III -- Group 016\\
         \end{pmatrix}
     \end{equation}
 
-    the activation $f(x) = \frac{e^{0.5x-2}-e^{0.5x-2}}{e^{0.5x-2}+e^{0.5x-2}} = \tanh(0.5x-2)$ for every unit, and squared error loss $\frac{1}{2}||\mathbf{z}-\hat{\mathbf{z}}||^2_2$. Perform one batch gradient descent update (with learning rate $\eta = 0.1$) for trainingobservations $\mathbf{x}_1 = (1, 1, 1, 1)$ and $\mathbf{x}_2 = (1, 0, 0, -1)$ with targets $B$ and $A$, respectively.
+    the activation $f(x) = \frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}} = \tanh(0.5x-2)$ for every unit, and squared error loss $\frac{1}{2}||\mathbf{z}-\hat{\mathbf{z}}||^2_2$. Perform one batch gradient descent update (with learning rate $\eta = 0.1$) for trainingobservations $\mathbf{x}_1 = (1, 1, 1, 1)$ and $\mathbf{x}_2 = (1, 0, 0, -1)$ with targets $B$ and $A$, respectively.
 
-    
+    \paragraph{Derivative of activation and loss functions:}
+    \begin{equation}
+    \begin{split}
+        f(x) &= \tanh(0.5x-2) = \frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}} \\
+        f'(x) &= \Biggl(\frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}} \Biggr)' \\
+        &= \frac{\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)'\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)-\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)'\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)}{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2} \\
+        &= \frac{\Bigl(0.5e^{0.5x-2}+0.5e^{-0.5x+2}\Bigr)\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)-\Bigl(0.5e^{0.5x-2}-0.5e^{-0.5x+2}\Bigr)\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)}{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2} \\
+        &= \frac{0.5\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)-0.5\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)}{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2} \\
+        &= \frac{0.5\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2-0.5\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)^2}{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2} \\
+        &= 0.5\frac{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2}{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2} - 0.5\frac{\Bigl(e^{0.5x-2}-e^{-0.5x+2}\Bigr)^2}{\Bigl(e^{0.5x-2}+e^{-0.5x+2}\Bigr)^2}\\
+        &= 0.5 - 0.5\Biggl(\frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}}\Biggr)^2 = 0.5 - 0.5\tanh^2(0.5x-2)
+    \end{split}
+    \end{equation}
+
+    \begin{equation}
+    \begin{split}
+        E(\mathbf{t}, \mathbf{o}) &= \frac{1}{2}\sum_{i=1}^{k}||\mathbf{t}_i-\mathbf{o}_i||^2 \\
+        \frac{\partial E}{\partial \mathbf{o}}(\mathbf{t}, \mathbf{o}) &= \frac{\partial}{\partial \mathbf{o}}\Bigl[\frac{1}{2}\sum_{i=1}^{k}||\mathbf{t}_i-\mathbf{o}_i||^2 \Bigr] \\
+        &= \frac{1}{2}\sum_{i=1}^{k}\frac{\partial}{\partial \mathbf{o}_i}\Bigl[||\mathbf{t}_i-\mathbf{o}_i||^2 \Bigr] \\
+        &= \frac{1}{2}\sum_{i=1}^{k}\Bigl[ 2(\mathbf{t}_i - \mathbf{o}_i)\cdot(-1)\Bigr] \\
+        &= -\sum_{i=1}^{k}(\mathbf{t}_i - \mathbf{o}_i)
+    \end{split}
+    \end{equation}
+
+    \paragraph{Notation:} Since the derivative of the sum is the derivative of the sums, we will compute the contribuitions for the gradient descent individually for each observation. That way, lets define $\mathbf{y}_i^{[j]}$ as the contribuition of the $i$th observation to $\mathbf{y}$ component (can be a vector or matrix) of the $j$th layer. While $\mathbf{y}^{[j]}$ means the overall contribuition to the $\mathbf{y}$ component of the $j$th layer.
+
+    \paragraph{Forward propagation:} Firstly we will need to forward propagate in order to get the prediction for the observations using the old weights and biases.
+    The base rules for forward propagation are:
+
+    \begin{equation}
+    \begin{split}
+        \mathbf{z}^{[k]} &= \mathbf{W}^{[k]} \cdot \mathbf{x}^{[k-1]} + \mathbf{b}^{[k]} \\
+        \mathbf{x}^{[k]} &= \phi^{[k]}(\mathbf{z}^{[k]})
+    \end{split}
+    \end{equation}
+
+    Where $\mathbf{x}^{[0]} = \mathbf{x}$, $\hat{\mathbf{z}} = \mathbf{x}^{[k]}$ (where $k$ is the last layer's index). $\phi^{[k]}$ is the activation function for the $k$th layer applied element wise, in this case $\phi^{[k]}(x) = f(x) =\tanh(0.5x-2)$ for every $k$.
+
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{x}_1^{[0]} &= \begin{bmatrix}
+            1 \\ 1 \\ 1 \\ 1
+        \end{bmatrix} &\qquad \mathbf{x}_2^{[0]} &= \begin{bmatrix}
+            1 \\ 0 \\ 0 \\ -1
+        \end{bmatrix} \\
+        \mathbf{z}_1^{[1]} &= \mathbf{W}^{[1]} \cdot \mathbf{x}_1^{[0]} + \mathbf{b}^{[1]} = \begin{bmatrix}
+            5 \\ 6 \\ 5
+        \end{bmatrix} &\qquad \mathbf{z}_2^{[1]} &= \mathbf{W}^{[1]} \cdot \mathbf{x}_2^{[0]} + \mathbf{b}^{[1]} = \begin{bmatrix}
+            1 \\ 1 \\ 1
+        \end{bmatrix} \\
+        \mathbf{x}_1^{[1]} &= \phi^{[1]}(\mathbf{z}_1^{[1]}) = f(\mathbf{z}_1^{[1]}) \approx \begin{bmatrix}
+            0.4621 \\ 0.7616 \\ 0.4621
+        \end{bmatrix}&\qquad \mathbf{x}_2^{[1]} &= \phi^{[1]}(\mathbf{z}_2^{[1]}) = f(\mathbf{z}_2^{[1]}) \approx \begin{bmatrix}
+            -0.9051 \\ -0.9051 \\ -0.9051
+        \end{bmatrix} \\
+        \mathbf{z}_1^{[2]} &= \mathbf{W}^{[2]} \cdot \mathbf{x}_1^{[1]} + \mathbf{b}^{[2]} \approx \begin{bmatrix}
+            4.9706 \\ 2.6858
+        \end{bmatrix} &\qquad \mathbf{z}_2^{[2]} &= \mathbf{W}^{[2]} \cdot \mathbf{x}_2^{[1]} + \mathbf{b}^{[2]} \approx \begin{bmatrix}
+            -4.4309 \\ -1.7154
+        \end{bmatrix} \\
+        \mathbf{x}_1^{[2]} &= \phi^{[2]}(\mathbf{z}_1^{[2]}) = f(\mathbf{z}_1^{[2]}) \approx \begin{bmatrix}
+            0.4505 \\ -0.5764
+        \end{bmatrix}&\qquad \mathbf{x}_2^{[2]} &= \phi^{[2]}(\mathbf{z}_2^{[2]}) = f(\mathbf{z}_2^{[2]}) \approx \begin{bmatrix}
+            -0.9996 \\ -0.9934
+        \end{bmatrix} \\
+        \mathbf{z}_1^{[3]} &= \mathbf{W}^{[3]} \cdot \mathbf{x}_1^{[2]} + \mathbf{b}^{[3]} \approx \begin{bmatrix}
+            0.8741 \\ 1.7750 \\ 0.8741
+        \end{bmatrix} &\qquad \mathbf{z}_2^{[3]} &= \mathbf{W}^{[3]} \cdot \mathbf{x}_2^{[2]} + \mathbf{b}^{[3]} \approx \begin{bmatrix}
+            -0.9930 \\ -2.9921 \\ -0.9930
+        \end{bmatrix} \\
+        \mathbf{x}_1^{[3]} &= \phi^{[3]}(\mathbf{z}_1^{[3]}) = f(\mathbf{z}_1^{[3]}) \approx \begin{bmatrix}
+            -0.9159 \\ -0.8049 \\ -0.9159
+        \end{bmatrix} &\qquad \mathbf{x}_2^{[3]} &= \phi^{[3]}(\mathbf{z}_2^{[3]}) = f(\mathbf{z}_2^{[3]}) \approx \begin{bmatrix}
+            -0.9865 \\ -0.9982 \\ -0.9865
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    \paragraph{Class encoding} Since Neural Networks operate solely on numbers, we need to define an encoding for the output. The way to encode the classes is to have the number of output layer neurons equal to the number of classes, and for the $k$th class the encoding have the max value possible on the $k$th coordinate and the minimum value possible on the other coordinates. Since the activation function of the output layer is $\tanh(x) \in [-1, 1]$, we have:
+
+    \begin{equation}
+    \begin{aligned}
+        \hat{z} = A \Rightarrow t = \begin{bmatrix}
+            1 \\ -1 \\ -1
+        \end{bmatrix} &\qquad \hat{z} = B \Rightarrow t = \begin{bmatrix}
+            -1 \\ 1 \\ -1
+        \end{bmatrix} &\qquad \hat{z} = C \Rightarrow t = \begin{bmatrix}
+            -1 \\ -1 \\ 1
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    That way, for our observations, we have:
+
+    \begin{equation}
+    \begin{aligned}
+        \hat{z}_1 = B \Rightarrow t_1 = \begin{bmatrix}
+            -1 \\ 1 \\ -1
+        \end{bmatrix} \qquad\qquad\qquad \hat{z}_2 = A \Rightarrow t_2 = \begin{bmatrix}
+            1 \\ -1 \\ -1
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    \paragraph{Backpropagation rules} The base of Backpropagation is the following rule:
+
+    \begin{equation}
+        \mathbf{W}^{[k]} = \mathbf{W}^{[k]} - \eta\frac{\partial E}{\partial \mathbf{W}^{[k]}}
+    \end{equation}
+
+    The same applies for the biases:
+
+    \begin{equation}
+        \mathbf{b}^{[k]} = \mathbf{b}^{[k]} - \eta\frac{\partial E}{\partial \mathbf{b}^{[k]}}
+    \end{equation}
+
+    If the $k$th layer is the last, we have:
+
+    \begin{equation}
+    \begin{aligned}
+        \frac{\partial E}{\partial \mathbf{W}^{[k]}} &= \frac{\partial E}{\partial \mathbf{x}^{[k]}} \circ \frac{\partial \mathbf{x}^{[k]}}{\partial \mathbf{z}^{[k]}} \cdot \frac{\partial \mathbf{z}^{[k]}}{\partial \mathbf{W}^{[k]}} \\
+        &= \frac{\partial E}{\partial \mathbf{x}^{[k]}} \circ \phi'^{[k]}(\mathbf{z}^{[k]}) \cdot \mathbf{x}^{[k-1]}
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        \frac{\partial E}{\partial \mathbf{b}^{[k]}} &= \frac{\partial E}{\partial \mathbf{x}^{[k]}} \circ \frac{\partial \mathbf{x}^{[k]}}{\partial \mathbf{z}^{[k]}} \cdot \frac{\partial \mathbf{z}^{[k]}}{\partial \mathbf{b}^{[k]}} \\
+        &= \frac{\partial E}{\partial \mathbf{x}^{[k]}} \circ \phi'^{[k]}(\mathbf{z}^{[k]})
+    \end{aligned}
+    \end{equation}
+
+    By defining, for any layer of index $i$ on a network with $k-1$ layers:
+
+    \begin{equation}
+        \delta^{[i]} = \left\{
+        \begin{array}{ll}
+            \frac{\partial E}{\partial \mathbf{x}^{[k]}} \circ \phi'^{[k]}(\mathbf{z}^{[k]}) & \textrm{if} \quad i = k \\
+            \\
+            {\mathbf{W}^{[i]}}^T \cdot \delta^{[i+1]} \circ \phi'^{[k]}(\mathbf{z}^{[k]})  & \textrm{else}
+        \end{array} 
+        \right.
+    \end{equation}
+
+    We can write:
+
+    \begin{equation}
+    \begin{aligned}
+        \frac{\partial E}{\partial \mathbf{W}^{[i]}} &= \delta^{[i]} \cdot {(\mathbf{x}^{[i+1]})}^T \\
+        \frac{\partial E}{\partial \mathbf{b}^{[i]}} &= \delta^{[i]} \\
+    \end{aligned}
+    \end{equation}
 
 \end{enumerate}
 
