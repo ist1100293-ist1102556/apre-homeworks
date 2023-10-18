@@ -155,7 +155,7 @@ Homework III -- Group 016\\
         \end{pmatrix}
     \end{equation}
 
-    the activation $f(x) = \frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}} = \tanh(0.5x-2)$ for every unit, and squared error loss $\frac{1}{2}||\mathbf{z}-\hat{\mathbf{z}}||^2_2$. Perform one batch gradient descent update (with learning rate $\eta = 0.1$) for trainingobservations $\mathbf{x}_1 = (1, 1, 1, 1)$ and $\mathbf{x}_2 = (1, 0, 0, -1)$ with targets $B$ and $A$, respectively.
+    the activation $f(x) = \frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}} = \tanh(0.5x-2)$ for every unit, and squared error loss $\frac{1}{2}||\mathbf{z}-\hat{\mathbf{z}}||^2_2$. Perform one batch gradient descent update (with learning rate $\eta = 0.1$) for training observations $\mathbf{x}_1 = (1, 1, 1, 1)$ and $\mathbf{x}_2 = (1, 0, 0, -1)$ with targets $B$ and $A$, respectively.
 
     \paragraph{Derivative of activation and loss functions:}
     \begin{equation}
@@ -181,7 +181,7 @@ Homework III -- Group 016\\
     \end{split}
     \end{equation}
 
-    \paragraph{Notation:} Since the derivative of the sum is the derivative of the sums, we will compute the contribuitions for the gradient descent individually for each observation. That way, lets define $\mathbf{y}_i^{[j]}$ as the contribuition of the $i$th observation to $\mathbf{y}$ component (can be a vector or matrix) of the $j$th layer. While $\mathbf{y}^{[j]}$ means the overall contribuition to the $\mathbf{y}$ component of the $j$th layer.
+    \paragraph{Notation:} Since the derivative of the sum is the sum of the derivatives, we will compute the contribuitions for the gradient descent individually for each observation. That way, lets define $\mathbf{y}_i^{[j]}$ as the contribuition of the $i$th observation to $\mathbf{y}$ component (can be a vector or matrix) of the $j$th layer. While $\mathbf{y}^{[j]}$ means the overall contribuition to the $\mathbf{y}$ component of the $j$th layer.
 
     \paragraph{Forward propagation:} Firstly we will need to forward propagate in order to get the prediction for the observations using the old weights and biases.
     The base rules for forward propagation are:
@@ -305,7 +305,7 @@ Homework III -- Group 016\\
 
     \begin{equation}
     \begin{aligned}
-        \frac{\partial E}{\partial \mathbf{W}^{[i]}} &= \delta^{[i]} \cdot {(\mathbf{x}^{[i+1]})}^T \\
+        \frac{\partial E}{\partial \mathbf{W}^{[i]}} &= \delta^{[i]} \cdot {(\mathbf{x}^{[i-1]})}^T \\
         \frac{\partial E}{\partial \mathbf{b}^{[i]}} &= \delta^{[i]} \\
     \end{aligned}
     \end{equation}
