@@ -296,7 +296,7 @@ Homework III -- Group 016\\
         \begin{array}{ll}
             \frac{\partial E}{\partial \mathbf{x}^{[k]}} \circ \phi'^{[k]}(\mathbf{z}^{[k]}) & \textrm{if} \quad i = k \\
             \\
-            {\mathbf{W}^{[i]}}^T \cdot \delta^{[i+1]} \circ \phi'^{[k]}(\mathbf{z}^{[k]})  & \textrm{else}
+            {\mathbf{W}^{[i+1]}}^T \cdot \delta^{[i+1]} \circ \phi'^{[i]}(\mathbf{z}^{[i]})  & \textrm{else}
         \end{array} 
         \right.
     \end{equation}
@@ -307,6 +307,119 @@ Homework III -- Group 016\\
     \begin{aligned}
         \frac{\partial E}{\partial \mathbf{W}^{[i]}} &= \delta^{[i]} \cdot {(\mathbf{x}^{[i-1]})}^T \\
         \frac{\partial E}{\partial \mathbf{b}^{[i]}} &= \delta^{[i]} \\
+    \end{aligned}
+    \end{equation}
+
+    \paragraph{Backpropagation}
+
+    \begin{equation}
+    \begin{aligned}
+        \delta_1^{[3]} &= \frac{\partial E}{\partial \mathbf{x}_1^{[3]}} \circ \phi'^{[3]}(\mathbf{z}_1^{[3]}) = -(\mathbf{t}_1 - \mathbf{x}_1^{[3]}) \circ \begin{bmatrix}            f'(0.8741) \\ f'(1.7750) \\ f'(0.8741)
+        \end{bmatrix} = \begin{bmatrix}
+            0.00677537 \\ -0.31773455 \\ 0.00677537
+        \end{bmatrix} \\
+        \delta_2^{[3]} &= \frac{\partial E}{\partial \mathbf{x}_2^{[3]}} \circ \phi'^{[3]}(\mathbf{z}_2^{[3]}) = \begin{bmatrix}
+            -0.02659614 \\ 0.00000337 \\ 0.00018046
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        \delta_1^{[2]} &= {\mathbf{W}^{[3]}}^T \cdot \delta_1^{[3]} \circ \phi'^{[2]}(\mathbf{z}_1^{[2]})
+        &= \begin{bmatrix}
+            -0.37448246 \\ -0.10155772
+        \end{bmatrix} \\
+        \delta_2^{[2]} &= {\mathbf{W}^{[3]}}^T \cdot \delta_2^{[3]} \circ \phi'^{[2]}(\mathbf{z}_2^{[2]})
+        &= \begin{bmatrix}
+            -0.00001151 \\ -0.0001729 
+        \end{bmatrix} \\
+        \delta_1^{[1]} &= {\mathbf{W}^{[2]}}^T \cdot \delta_1^{[2]} \circ \phi'^{[1]}(\mathbf{z}_1^{[1]})
+        &= \begin{bmatrix}
+            -0.18719036 \\ -0.33587187 \\ -0.18719036
+        \end{bmatrix} \\
+        \delta_2^{[1]} &= {\mathbf{W}^{[2]}}^T \cdot \delta_2^{[2]} \circ \phi'^{[1]}(\mathbf{z}_2^{[1]})
+        &= \begin{bmatrix}
+            -0.00001666 \\ -0.00001978 \\ -0.00001666
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        \frac{\partial E}{\partial \mathbf{W}^{[3]}} &= \delta^{[3]} \cdot (\mathbf{x}^{[2]})^T = \delta_1^{[3]} \cdot (\mathbf{x}_1^{[2]})^T + \delta_2^{[3]} \cdot (\mathbf{x}_2^{[2]})^T \\
+        &= \begin{bmatrix}
+            0.02963673 & 0.022516 \\
+            -0.14313723 & 0.18314544 \\
+             0.0028718 & -0.00408474
+        \end{bmatrix} \\
+        \frac{\partial E}{\partial \mathbf{W}^{[2]}} &= \delta^{[2]} \cdot (\mathbf{x}^{[1]})^T = \delta_1^{[2]} \cdot (\mathbf{x}_1^{[1]})^T + \delta_2^{[2]} \cdot (\mathbf{x}_2^{[1]})^T \\
+        &= \begin{bmatrix}
+            -0.17304435 & -0.28519324 & -0.17304435 \\
+            -0.04677506 & -0.07718926 & -0.04677506
+        \end{bmatrix} \\
+        \frac{\partial E}{\partial \mathbf{W}^{[1]}} &= \delta^{[1]} \cdot (\mathbf{x}^{[0]})^T = \delta_1^{[1]} \cdot (\mathbf{x}_1^{[0]})^T + \delta_2^{[1]} \cdot (\mathbf{x}_2^{[0]})^T \\
+        &= \begin{bmatrix}
+            -0.18720702 & -0.18719036 & -0.18719036 & -0.1871737 \\
+            -0.33589165 & -0.33587187 & -0.33587187 & -0.33585209 \\
+            -0.18720702 & -0.18719036 & -0.18719036 & -0.1871737 \\
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        \frac{\partial E}{\partial \mathbf{b}^{[3]}} &= \delta^{[3]} = \delta_1^{[3]} + \delta_2^{[3]} \\
+        &= \begin{bmatrix}
+            -0.01982077 \\-0.31773118 \\ 0.00695584
+        \end{bmatrix} \\
+        \frac{\partial E}{\partial \mathbf{b}^{[2]}} &= \delta^{[2]} = \delta_1^{[2]} + \delta_2^{[2]} \\
+        &= \begin{bmatrix}
+            -0.37449397 \\ -0.10173062
+        \end{bmatrix} \\
+        \frac{\partial E}{\partial \mathbf{b}^{[1]}} &= \delta^{[1]} = \delta_1^{[1]} + \delta_2^{[1]} \\
+        &= \begin{bmatrix}
+            -0.18720702 \\ -0.33589165 \\ -0.18720702
+        \end{bmatrix} \\
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{W}_{new}^{[3]} &= \mathbf{W}^{[3]} - \eta \frac{\partial E}{\partial \mathbf{W}^{[3]}}
+        = \begin{bmatrix}
+            0.99703633 & 0.9977484 \\
+            3.01431372 & 0.98168546 \\
+            0.99971282 & 1.00040847 \\
+            \end{bmatrix} \\
+        \mathbf{W}_{new}^{[2]} &= \mathbf{W}^{[2]} - \eta \frac{\partial E}{\partial \mathbf{W}^{[2]}}
+        = \begin{bmatrix}
+            1.01730444 & 4.02851932 & 1.01730444 \\
+            1.00467751 & 1.00771893 & 1.00467751
+        \end{bmatrix} \\
+        \mathbf{W}_{new}^{[1]} &= \mathbf{W}^{[1]} - \eta \frac{\partial E}{\partial \mathbf{W}^{[1]}}
+        = \begin{bmatrix}
+            1.0187207  & 1.01871904 & 1.01871904 & 1.01871737 \\
+            1.03358917 & 1.03358719 & 2.03358719 & 1.03358521 \\
+            1.0187207  & 1.01871904 & 1.01871904 & 1.01871737 \\
+            \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        \mathbf{b}_{new}^{[3]} &= \mathbf{b}^{[3]} - \eta \frac{\partial E}{\partial \mathbf{b}^{[3]}}
+        = \begin{bmatrix}
+            1.00198208 \\ 1.03177312 \\ 0.99930442
+            \end{bmatrix} \\
+        \mathbf{b}_{new}^{[2]} &= \mathbf{b}^{[2]} - \eta \frac{\partial E}{\partial \mathbf{b}^{[2]}}
+        = \begin{bmatrix}
+            1.0374494 \\ 1.01017306
+        \end{bmatrix} \\
+        \mathbf{b}_{new}^{[1]} &= \mathbf{b}^{[1]} - \eta \frac{\partial E}{\partial \mathbf{b}^{[1]}}
+        = \begin{bmatrix}
+            1.0187207 \\ 1.03358917 \\ 1.0187207 
+            \end{bmatrix}
     \end{aligned}
     \end{equation}
 
