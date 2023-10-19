@@ -34,6 +34,10 @@ Homework III -- Group 016\\
     \begin{enumerate}
         \item Given the radial basis function, $\phi_j(x)=\exp\bigl( \frac{||\mathbf{x}-\mathbf{c}_j||^2}{2} \bigr)$, that transforms the originalspace onto a new space characterized by the similarity of the original observations to thefollowing data points, {$c1$ = (0, 0) , $c2$ = (1, -1) , $c3$ = (-1, 1)}.Learn the Ridge regression ($l2$ regularization) using the closed solution with $\lambda = 0.1$.
     
+        \begin{center}
+            \includegraphics[scale=0.5]{images/code1.png}
+        \end{center}
+
         Lets define the transformation of a vector as:
 
         \begin{equation}
@@ -156,7 +160,7 @@ Homework III -- Group 016\\
     \end{equation}
 
     the activation $f(x) = \frac{e^{0.5x-2}-e^{-0.5x+2}}{e^{0.5x-2}+e^{-0.5x+2}} = \tanh(0.5x-2)$ for every unit, and squared error loss $\frac{1}{2}||\mathbf{z}-\hat{\mathbf{z}}||^2_2$. Perform one batch gradient descent update (with learning rate $\eta = 0.1$) for training observations $\mathbf{x}_1 = (1, 1, 1, 1)$ and $\mathbf{x}_2 = (1, 0, 0, -1)$ with targets $B$ and $A$, respectively.
-
+    
     \paragraph{Derivative of activation and loss functions:}
     \begin{equation}
     \begin{split}
@@ -181,6 +185,12 @@ Homework III -- Group 016\\
     \end{split}
     \end{equation}
 
+    For this neural network, since the output layer has index 3, then $\mathbf{o} = \mathbf{x}^{[3]}$.
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code2.png}
+    \end{center}
+
     \paragraph{Notation:} Since the derivative of the sum is the sum of the derivatives, we will compute the contribuitions for the gradient descent individually for each observation. That way, lets define $\mathbf{y}_i^{[j]}$ as the contribuition of the $i$th observation to $\mathbf{y}$ component (can be a vector or matrix) of the $j$th layer. While $\mathbf{y}^{[j]}$ means the overall contribuition to the $\mathbf{y}$ component of the $j$th layer.
 
     \paragraph{Forward propagation:} Firstly we will need to forward propagate in order to get the prediction for the observations using the old weights and biases.
@@ -194,6 +204,10 @@ Homework III -- Group 016\\
     \end{equation}
 
     Where $\mathbf{x}^{[0]} = \mathbf{x}$, $\hat{\mathbf{z}} = \mathbf{x}^{[k]}$ (where $k$ is the last layer's index). $\phi^{[k]}$ is the activation function for the $k$th layer applied element wise, in this case $\phi^{[k]}(x) = f(x) =\tanh(0.5x-2)$ for every $k$.
+
+    \begin{center}
+        \includegraphics[scale=0.4]{images/code3.png}
+    \end{center}
 
     \begin{equation}
     \begin{aligned}
@@ -261,7 +275,7 @@ Homework III -- Group 016\\
     \end{aligned}
     \end{equation}
 
-    \paragraph{Backpropagation rules} The base of Backpropagation is the following rule:
+    \paragraph{Backpropagation rules:} The base of Backpropagation is the following rule:
 
     \begin{equation}
         \mathbf{W}^{[k]} = \mathbf{W}^{[k]} - \eta\frac{\partial E}{\partial \mathbf{W}^{[k]}}
@@ -310,7 +324,11 @@ Homework III -- Group 016\\
     \end{aligned}
     \end{equation}
 
-    \paragraph{Backpropagation}
+    \paragraph{Backpropagation:}
+
+    \begin{center}
+        \includegraphics[scale=0.4]{images/code4.png}
+    \end{center}
 
     \begin{equation}
     \begin{aligned}
@@ -344,6 +362,10 @@ Homework III -- Group 016\\
         \end{bmatrix}
     \end{aligned}
     \end{equation}
+
+    \begin{center}
+        \includegraphics[scale=0.3]{images/code5.png}
+    \end{center}
 
     \begin{equation}
     \begin{aligned}
