@@ -142,7 +142,7 @@ Homework III -- Group 016\\
         \begin{equation}
         \begin{split}
             \textrm{RMSE} &= \sqrt{\frac{1}{N}\sum_{i=1}^{N}(z_i-\hat{z}_i)^2} \\
-            &= \sqrt{\frac{1}{4}\biggl( (0.8-0.7705)^2 + (0.6-0.5123)^2 + (0.3-0.3390)^2 + (0.3-0.3863)^2\biggr)} \\
+            &= \sqrt{\frac{1}{4}\biggl( (0.8-0.7584)^2 + (0.6-0.5123)^2 + (0.3-0.3090)^2 + (0.3-0.3863)^2\biggr)} \\
             &\approx 0.06342
         \end{split}
         \end{equation}
@@ -463,7 +463,7 @@ Homework III -- Group 016\\
 
 \end{enumerate}
 
-\vskip 1cm
+\vskip 10cm
 
 \large{\textbf{Part II}: Programming and Critical Analysis}\normalsize
 
@@ -502,7 +502,7 @@ Given their stochastic behavior, average the performance of each MLP from 10 run
         \includegraphics[scale=0.6]{images/code8.png}
     \end{center}
 
-    Rounding and bounding seems to decrease the MAE since all of the expected values are integer, meaning that small error created by the prediction will be removed, resulting in a smaller average error.
+    Rounding and bounding seems to decrease the MAE since all of the expected values are integers, meaning that small error created by the prediction will be removed, resulting in a smaller average error.
 
     \item Similarly assess the impact on RMSE from replacing early stopping by a well-defined
     number of iterations in $\{20,50,100,200\}$ (where one iteration corresponds to a batch).
