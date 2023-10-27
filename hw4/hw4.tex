@@ -1,0 +1,88 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{nicematrix}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{mathtools}
+
+\setlength{\droptitle}{-6em}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\begin{document}
+
+\newcommand{\prob}{\textrm{P}}
+\newcommand{\ind}{\perp\!\!\!\!\!\perp} 
+\newcommand{\notind}{\not\perp\!\!\!\!\!\perp}
+\newcommand{\defeq}{\vcentcolon=}
+
+\center
+Aprendizagem 2023\\
+Homework III -- Group 016\\
+(ist1100293, ist1102556)\vskip 1cm
+
+\large{\textbf{Part I}: Pen and paper}\normalsize
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item Perform one epoch of the EM clustering algorithm and determine the new parameters.
+    Hint: we suggest you to use numpy and scipy, however disclose the intermediary results step by step.
+
+    \paragraph{E-Step} First we will compute the posterior probabilities for each observation for each cluster, with the initial mixture:
+
+    \begin{equation}
+    \begin{aligned}
+        P(C=c_k|\mathbf{x}) &\propto P(\mathbf{x}|C=c_k)P(C=c_k) \\
+        &\propto P(Y_1 = y_1, Y_2 = y_2, Y_3= y_3|C=c_k)P(C=c_k) \\
+        &\propto P(Y_1 = y_1|C=c_k)P(Y_2 = y_2, Y_3=y_3|C=c_k)P(C=c_k) \\
+        &\propto p_k^{y_1}(1-p_k)^{1-y_1}N_k(y_2, y_3)\pi_k
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        P(C=c_1|\mathbf{x}_1) &\propto p_1N_1(0.6, 0.1)\pi_1 &\qquad P(C=c_2|\mathbf{x}_1) &\propto p_2N_2(0.6, 0.1)\pi_2 \\
+        &\propto 0.009986 &\qquad &\propto 0.041866 \\
+        P(C=c_1|\mathbf{x}_1) &\approx \frac{0.009986}{0.009986+0.041866} &\qquad P(C=c_2|\mathbf{x}_1) &\approx \frac{0.041866}{0.009986+0.041866} \\
+        &\approx 0.1926 &\qquad &\approx 0.8074
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        P(C=c_1|\mathbf{x}_2) &\propto (1-p_1)N_1(-0.4, 0.8)\pi_1 &\qquad P(C=c_2|\mathbf{x}_2) &\propto (1-p_2)N_2(-0.4, 0.8)\pi_2 \\
+        &\propto 0.017517 &\qquad &\propto 0.010229 \\
+        P(C=c_1|\mathbf{x}_2) &\approx \frac{0.017517}{0.017517+0.010229} &\qquad P(C=c_2|\mathbf{x}_2) &\approx \frac{0.010229}{0.017517+0.010229} \\
+        &\approx 0.6313 &\qquad &\approx 0.3687
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        P(C=c_1|\mathbf{x}_3) &\propto (1-p_1)N_1(0.2, 0.5)\pi_1 &\qquad P(C=c_2|\mathbf{x}_3) &\propto (1-p_2)N_2(0.2, 0.5)\pi_2 \\
+        &\propto 0.023931 &\qquad &\propto 0.019437 \\
+        P(C=c_1|\mathbf{x}_3) &\approx \frac{0.023931}{0.023931+0.019437} &\qquad P(C=c_2|\mathbf{x}_3) &\approx \frac{0.019437}{0.023931+0.019437} \\
+        &\approx 0.5518 &\qquad &\approx 0.4482
+    \end{aligned}
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        P(C=c_1|\mathbf{x}_4) &\propto p_1N_1(0.4, -0.1)\pi_1 &\qquad P(C=c_2|\mathbf{x}_4) &\propto p_2N_2(0.4, -0.1)\pi_2 \\
+        &\propto 0.008857 &\qquad &\propto 0.043575 \\
+        P(C=c_1|\mathbf{x}_4) &\approx \frac{0.008857}{0.008857+0.043575} &\qquad P(C=c_2|\mathbf{x}_4) &\approx \frac{0.043575}{0.008857+0.043575} \\
+        &\approx 0.1689 &\qquad &\approx 0.8311
+    \end{aligned}
+    \end{equation}
+\end{enumerate}
+
+\vskip 10cm
+
+\large{\textbf{Part II}: Programming and Critical Analysis}\normalsize
+
+
+\end{document}
