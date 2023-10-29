@@ -78,6 +78,170 @@ Homework III -- Group 016\\
         &\approx 0.1689 &\qquad &\approx 0.8311
     \end{aligned}
     \end{equation}
+
+    \vskip 2cm
+
+    Using the notation: $\gamma_{ki}=P(C = c_k |\mathbf{x}_i)$. We get:
+
+    \begin{equation}
+    \begin{aligned}
+        \gamma_{11} = 0.1926 &\qquad \gamma_{21} = 0.8074 \\
+        \gamma_{12} = 0.6313 &\qquad \gamma_{22} = 0.3687 \\
+        \gamma_{13} = 0.5518 &\qquad \gamma_{23} = 0.4482 \\
+        \gamma_{14} = 0.1689 &\qquad \gamma_{24} = 0.8311
+    \end{aligned}
+    \end{equation}
+
+    \paragraph{M-Step} Now, we need to adjust the cluster parameters. For the normal distribuition, we have:
+
+    \begin{equation}
+        \mu_k = \frac{\sum_{i=1}^{n}\gamma_{ki}\mathbf{x}_i}{\sum_{i=1}^{n}\gamma_{ki}} \qquad \Sigma_k = \frac{\sum_{i=1}^{n}\gamma_{ki}(\mathbf{x}_i-\mu_i)(\mathbf{x}_i-\mu_i)^T}{\sum_{i=1}^{n}\gamma_{ki}}
+    \end{equation}
+
+    Where $\mathbf{x}_i$ are vectors with only $y_2$ and $y_3$. That gives us:
+
+    \begin{equation}
+    \begin{aligned}
+        \mu_1 &= \begin{bmatrix}
+            0.0265 \\ 0.5071
+        \end{bmatrix} &\qquad \mu_2&= \begin{bmatrix}
+            0.3091 \\ 0.2104
+        \end{bmatrix} \\
+        \Sigma_1 &= \begin{bmatrix}
+            0.1414  & -0.1054 \\
+            -0.1054 & 0.09605 
+        \end{bmatrix} &\qquad \Sigma_2 &= \begin{bmatrix}
+            0.1083  & -0.0887 \\
+            -0.0887 &  0.1041
+        \end{bmatrix}
+    \end{aligned}
+    \end{equation}
+
+    To adjust the parameter of the Bernoulli distribuition, we will use the same estimator as the mean in a normal distribuition.
+
+    \begin{equation}
+        p_i = \frac{\sum_{i=1}^{n}\gamma_{ki}x_i}{\sum_{i=1}^{n}\gamma_{ki}}
+    \end{equation}
+
+    Where $x_i$ is the $y_1$ variable of the $\mathbf{x}_i$ observation. Which gives us:
+
+    \begin{equation}
+    \begin{aligned}
+        p_1 = 0.2340 \qquad p_2 = 0.6673
+    \end{aligned}
+    \end{equation}
+
+    Finally, for the priors, we have:
+
+    \begin{equation}
+        \pi_k = \frac{\sum_{i=1}^{N}\gamma_{ki}}{\sum_{j=1}^{N}\sum_{i=1}^{n}\gamma_{ji}}
+    \end{equation}
+
+    Which gives us:
+
+    \begin{equation}
+        \pi_1 = 0.3862 \qquad \pi_2 = 0.6138
+    \end{equation}
+
+    \item Given the new observation, $\mathbf{x}_{new} = \begin{pmatrix}
+        1 \\ 0.3 \\ 0.7 \end{pmatrix}$, determine the cluster memberships (posteriors).
+
+        \begin{equation}
+            P(C = c_k | \mathbf{x}_{new}) \propto p_kN_k(0.3, 0.7)\pi_k
+        \end{equation}
+
+        \begin{equation}
+        \begin{aligned}
+            P(C = c_1 | \mathbf{x}_{new}) &= \frac{p_1N_1(0.3, 0.7)\pi_1}{p_1N_1(0.3, 0.7)\pi_1 + p_2N_2(0.3, 0.7)\pi_2} \\
+            &\approx 0.0803 \\
+            P(C = c_2 | \mathbf{x}_{new}) &= \frac{p_2N_2(0.3, 0.7)\pi_2}{p_1N_1(0.3, 0.7)\pi_1 + p_2N_2(0.3, 0.7)\pi_2} \\
+            &\approx 0.9197 \\
+        \end{aligned}
+        \end{equation}
+    
+    \item Performing a hard assignment of observations to clusters under a ML assumption, identify
+    the silhouette of the larger cluster under a Manhattan distance.
+
+    Under a ML assumtion, we will ignore the priors, so:
+
+    \begin{equation}
+        P(C = c_k|\mathbf{x}) = P(\mathbf{x}|C = c_k) = p_k^{y_1}(1-p_k)^{y_1}N_k(y_2, y_3)
+    \end{equation}
+
+    Also, since we are doing hard assignments, we dont need to normalize these resutls.
+
+    \begin{equation}
+    \begin{aligned}
+        P(C = c_1 | \mathbf{x}_1) &= 0.2315 &\qquad P(C = c_2 | \mathbf{x}_1) &= 0.9495 \\
+        P(C = c_1 | \mathbf{x}_2) &= 1.2663 &\qquad P(C = c_2 | \mathbf{x}_2) &= 0.0887 \\
+        P(C = c_1 | \mathbf{x}_3) &= 1.4381 &\qquad P(C = c_2 | \mathbf{x}_3) &= 0.4542 \\
+        P(C = c_1 | \mathbf{x}_4) &= 0.0207 &\qquad P(C = c_2 | \mathbf{x}_4) &= 0.7233
+    \end{aligned}
+    \end{equation}
+
+    That way, we can assign $\mathbf{x}_1$, $\mathbf{x}_4$ to $c_1$ and $\mathbf{x}_2$, $\mathbf{x}_3$ to $c_2$.
+
+    Now, to compute the silhouette, we need to compute first the distance between all points:
+
+    \begin{equation}
+        d(\mathbf{x}, \mathbf{y}) = |y_1 - x_1| + |y_2 - x_2| + |y_3 - x_3|
+    \end{equation}
+
+    \begin{equation}
+    \begin{aligned}
+        d(\mathbf{x}_1, \mathbf{x}_2) &= 1 + 1   + 0.7 &= 2.7 \\
+        d(\mathbf{x}_1, \mathbf{x}_3) &= 1 + 0.4 + 0.4 &= 1.8 \\
+        d(\mathbf{x}_1, \mathbf{x}_4) &= 0 + 0.2 + 0.2 &= 0.4 \\
+        d(\mathbf{x}_2, \mathbf{x}_3) &= 0 + 0.6 + 0.3 &= 0.9 \\
+        d(\mathbf{x}_2, \mathbf{x}_4) &= 1 + 0.8 + 0.9 &= 2.7 \\
+        d(\mathbf{x}_3, \mathbf{x}_4) &= 1 + 0.2 + 0.6 &= 1.8
+    \end{aligned}
+    \end{equation}
+
+    Then, the silhouette of a single point will be:
+    \begin{equation}
+        s(\mathbf{x}_i) = 1 - \frac{a(\mathbf{x}_i)}{b(\mathbf{x}_i)}
+    \end{equation}
+
+    Where $a(\mathbf{x})$ is the average distance from $\mathbf{x}$ to the other members of it's cluster, and $b(\mathbf{x})$ is the maximum of the average distance to the members of other cluster.
+
+    \begin{equation}
+    \begin{aligned}
+        s(\mathbf{x}_1) &= 1 - \frac{0.4}{\frac{1}{2}(2.7+1.8)} = 0.8222 \\
+        s(\mathbf{x}_2) &= 1 - \frac{0.9}{\frac{1}{2}(2.7+2.7)} = 0.6667 \\
+        s(\mathbf{x}_3) &= 1 - \frac{0.9}{\frac{1}{2}(1.8+1.8)} = 0.5 \\
+        s(\mathbf{x}_4) &= 1 - \frac{0.4}{\frac{1}{2}(2.7+1.8)} = 0.8222
+    \end{aligned}
+    \end{equation}
+
+    Now, the silhouette for the clusters is the average silhouette of it's members:
+
+    \begin{equation}
+    \begin{aligned}
+        s(c_1) = \frac{s(\mathbf{x}_2) + s(\mathbf{x}_3)}{2} = 0.8222 \\
+        s(c_2) = \frac{s(\mathbf{x}_1) + s(\mathbf{x}_4)}{2} = 0.5833
+    \end{aligned}
+    \end{equation}
+
+    \item Knowing the purity of the clustering solution is 0.75, identify the number of possible classes
+    (ground truth).
+
+    With the purity definition:
+
+    \begin{equation}
+        purity = \frac{1}{n} \sum_{k=1}^{K} \max_j(|C_k \cap L_j|)
+    \end{equation}
+
+    By inputing the known values, we get:
+
+    \begin{equation}
+    \begin{aligned}
+        \frac{1}{4}(\max_j(|C_1 \cap L_j|) + \max_j(|C_2 \cap L_j|)) &= 0.75 \\
+        \max_j(|C_1 \cap L_j|) + \max_j(|C_2 \cap L_j|) &= 3
+    \end{aligned}
+    \end{equation}
+
+    Since $|C_1|$ and $|C_2|$ are both $2$, both of the parcels will have a maximum value of 2. The parcels also will have a minimum value of $1$. That way, for the sum to equal $3$, one of them needs to be $1$ and the other $2$. That means that for one of the clusters, both of the observations need to belong to the same class, while for the other cluster, each observation needs to belong to a different class. That means that, if we assume that all classes are represented in the data, there can either be $2$ or $3$ distinct classes. That depends if the class of the two elements of the same cluster is also represented on the other cluster, or not.
 \end{enumerate}
 
 \vskip 10cm
