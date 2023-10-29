@@ -12,8 +12,6 @@
 
 \setlength{\droptitle}{-6em}
 
-\DeclareMathOperator*{\argmax}{arg\,max}
-
 \begin{document}
 
 \newcommand{\prob}{\textrm{P}}
@@ -34,6 +32,7 @@ Homework III -- Group 016\\
 
     \paragraph{E-Step} First we will compute the posterior probabilities for each observation for each cluster, with the initial mixture:
 
+    Since $y_1$ is independent from $y_2$ and $y_3$, and follows a Bernoulli distribuition with parameter $p_k$:
     \begin{equation}
     \begin{aligned}
         P(C=c_k|\mathbf{x}) &\propto P(\mathbf{x}|C=c_k)P(C=c_k) \\
@@ -43,6 +42,7 @@ Homework III -- Group 016\\
     \end{aligned}
     \end{equation}
 
+    So, we have:
     \begin{equation}
     \begin{aligned}
         P(C=c_1|\mathbf{x}_1) &\propto p_1N_1(0.6, 0.1)\pi_1 &\qquad P(C=c_2|\mathbf{x}_1) &\propto p_2N_2(0.6, 0.1)\pi_2 \\
