@@ -30,6 +30,10 @@ Homework III -- Group 016\\
     \item Perform one epoch of the EM clustering algorithm and determine the new parameters.
     Hint: we suggest you to use numpy and scipy, however disclose the intermediary results step by step.
 
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code1.png}
+    \end{center}
+
     \paragraph{E-Step} First we will compute the posterior probabilities for each observation for each cluster, with the initial mixture:
 
     Since $y_1$ is independent from $y_2$ and $y_3$, and follows a Bernoulli distribuition with parameter $p_k$:
@@ -79,7 +83,11 @@ Homework III -- Group 016\\
     \end{aligned}
     \end{equation}
 
-    \vskip 2cm
+    \begin{center}
+        \includegraphics[scale=0.45]{images/code2.png}
+    \end{center}
+    
+    \vskip 4cm
 
     Using the notation: $\gamma_{ki}=P(C = c_k |\mathbf{x}_i)$. We get:
 
@@ -143,6 +151,10 @@ Homework III -- Group 016\\
         \pi_1 = 0.3862 \qquad \pi_2 = 0.6138
     \end{equation}
 
+    \begin{center}
+        \includegraphics[scale=0.4]{images/code3.png}
+    \end{center}
+
     \item Given the new observation, $\mathbf{x}_{new} = \begin{pmatrix}
         1 \\ 0.3 \\ 0.7 \end{pmatrix}$, determine the cluster memberships (posteriors).
 
@@ -158,6 +170,10 @@ Homework III -- Group 016\\
             &\approx 0.9197 \\
         \end{aligned}
         \end{equation}
+
+        \begin{center}
+            \includegraphics[scale=0.4]{images/code4.png}
+        \end{center}
     
     \item Performing a hard assignment of observations to clusters under a ML assumption, identify
     the silhouette of the larger cluster under a Manhattan distance.
@@ -178,6 +194,10 @@ Homework III -- Group 016\\
         P(C = c_1 | \mathbf{x}_4) &= 0.0207 &\qquad P(C = c_2 | \mathbf{x}_4) &= 0.7233
     \end{aligned}
     \end{equation}
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code5.png}
+    \end{center}
 
     That way, we can assign $\mathbf{x}_1$, $\mathbf{x}_4$ to $c_1$ and $\mathbf{x}_2$, $\mathbf{x}_3$ to $c_2$.
 
@@ -218,8 +238,8 @@ Homework III -- Group 016\\
 
     \begin{equation}
     \begin{aligned}
-        s(c_1) = \frac{s(\mathbf{x}_2) + s(\mathbf{x}_3)}{2} = 0.8222 \\
-        s(c_2) = \frac{s(\mathbf{x}_1) + s(\mathbf{x}_4)}{2} = 0.5833
+        s(c_1) = \frac{s(\mathbf{x}_2) + s(\mathbf{x}_3)}{2} = 0.5833 \\
+        s(c_2) = \frac{s(\mathbf{x}_1) + s(\mathbf{x}_4)}{2} = 0.8222
     \end{aligned}
     \end{equation}
 
@@ -248,5 +268,68 @@ Homework III -- Group 016\\
 
 \large{\textbf{Part II}: Programming and Critical Analysis}\normalsize
 
+Recall the column\_diagnosis.arff dataset from previous homeworks. For the following exercises,
+normalize the data using sklearn's MinMaxScaler.
+
+\begin{center}
+    \includegraphics[scale=0.5]{images/code6.png}
+\end{center}
+
+\begin{enumerate}
+    \item Using sklearn, apply k-means clustering fully unsupervisedly on the normalized data with
+    $k \in \{2,3,4,5\}$ (random=0 and remaining parameters as default). Assess the silhouette and purity of
+    the produced solutions.
+
+    \begin{center}
+        \includegraphics[scale=0.38]{images/code7.png}
+    \end{center}
+
+    \item Consider the application of PCA after the data normalization:
+    
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code8.png}
+    \end{center}
+
+    \begin{enumerate}
+        \item Identify the variability explained by the top two principal components.
+            \begin{center}
+                \includegraphics[scale=0.3]{images/code9.png}
+            \end{center}
+        
+        \item For each one of these two components, sort the input variables by relevance by
+        inspecting the absolute weights of the linear projection.
+    
+        \begin{center}
+            \includegraphics[scale=0.6]{images/code10.png}
+        \end{center}
+    \end{enumerate}
+
+    \item Visualize side-by-side the data using: i) the ground diagnoses, and ii) the previously learned
+    $k = 3$ clustering solution. To this end, projected the normalized data onto a 2-dimensional data
+    space using PCA and then color observations using the reference and cluster annotations
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code11.png}
+    \end{center}
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/code12.png}
+    \end{center}
+
+    \paragraph{Results:}
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/graph1.png}
+    \end{center}
+
+    \begin{center}
+        \includegraphics[scale=0.5]{images/graph2.png}
+    \end{center}
+
+    \item Considering the results from questions (1) and (3), identify two ways on how clustering can
+    be used to characterize the population of ill and healthy individuals.
+
+    Given a clustering model that was trained with our data, we can use this cluster information in two ways that allow us to describe each condition. If our model's purity is high, we can hard-assign each cluster to a condition. That way, each condition can be seen as a set of groups, each with people with similar characteristics. However, if we can't get a model with good purity, we can analyze graphically the plot of our observations by using a dimensionality reduction technique. That way, we can observe geometrically the properties of each class (in this case, each condition) and each cluster. By relating those two, we can characterize our population. This method gets easier if the clustering model has high silhouette, since the clusters will be more cohese and separate (between each other).
+\end{enumerate}
 
 \end{document}
